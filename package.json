@@ -1,0 +1,119 @@
+{
+  "name": "um3-dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install": "jspm install",
+    "start": "NODE_ENV=production node server",
+    "start-dev": "jspm bundle src/index.js -wid & node server & chokidar-socket-emitter",
+    "dist:clear": "rimraf dist && mkdir -p dist",
+    "dist:sfx": "jspm build src/index.js dist/app.js --minify",
+    "dist:html": "html-dist index.html --minify  --remove-all --insert /app.js -o dist/index.html",
+    "dist:style": "mkdir -p dist/style && postcss --use postcss-import style/index.css -d dist/style/ && postcss --use autoprefixer dist/style/index.css -d dist/style/",
+    "dist": "npm run dist:clear && npm run dist:sfx && npm run dist:html && npm run dist:style",
+    "upload": "scp -r dist/* $UPLOAD_USER@$UPLOAD_HOST:$UPLOAD_PATH",
+    "deploy": "npm run dist && npm run uploadscp -r dist server package.json $UPLOAD_USER@$UPLOAD_HOST:$UPLOAD_PATH`"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^6.7.2",
+    "babel-eslint": "^7.1.1",
+    "chokidar-socket-emitter": "^0.5.4",
+    "eslint": "^3.15.0",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.9.0",
+    "html-dist": "^0.1.0",
+    "jspm": "^0.17.0-beta.32",
+    "ncp": "^2.0.0",
+    "postcss": "^5.2.11",
+    "postcss-cli": "^2.6.0",
+    "postcss-import": "^9.1.0",
+    "rimraf": "^2.5.4",
+    "serve": "^3.2.2"
+  },
+  "jspm": {
+    "name": "um3-dashboard",
+    "main": "um3-dashboard.js",
+    "dependencies": {
+      "react-dom": "npm:react-dom@^15.4.2",
+      "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@^0.6.0"
+    },
+    "devDependencies": {
+      "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@^6.22.0",
+      "plugin-babel": "npm:systemjs-plugin-babel@^0.0.20"
+    },
+    "peerDependencies": {
+      "assert": "npm:jspm-nodelibs-assert@^0.2.0",
+      "buffer": "npm:jspm-nodelibs-buffer@^0.2.0",
+      "child_process": "npm:jspm-nodelibs-child_process@^0.2.0",
+      "constants": "npm:jspm-nodelibs-constants@^0.2.0",
+      "crypto": "npm:jspm-nodelibs-crypto@^0.2.0",
+      "domain": "npm:jspm-nodelibs-domain@^0.2.0",
+      "events": "npm:jspm-nodelibs-events@^0.2.0",
+      "fs": "npm:jspm-nodelibs-fs@^0.2.0",
+      "http": "npm:jspm-nodelibs-http@^0.2.0",
+      "https": "npm:jspm-nodelibs-https@^0.2.0",
+      "os": "npm:jspm-nodelibs-os@^0.2.0",
+      "path": "npm:jspm-nodelibs-path@^0.2.0",
+      "process": "npm:jspm-nodelibs-process@^0.2.0",
+      "react": "npm:react@^15.4.2",
+      "stream": "npm:jspm-nodelibs-stream@^0.2.0",
+      "string_decoder": "npm:jspm-nodelibs-string_decoder@^0.2.0",
+      "url": "npm:jspm-nodelibs-url@^0.2.0",
+      "util": "npm:jspm-nodelibs-util@^0.2.0",
+      "vm": "npm:jspm-nodelibs-vm@^0.2.0",
+      "zlib": "npm:jspm-nodelibs-zlib@^0.2.0"
+    },
+    "overrides": {
+      "github:socketio/socket.io-client@1.7.2": {
+        "main": "dist/socket.io.js"
+      },
+      "npm:browserify-zlib@0.1.4": {
+        "dependencies": {
+          "readable-stream": "^2.0.2",
+          "pako": "~0.2.0"
+        },
+        "map": {
+          "_stream_transform": "readable-stream/transform"
+        }
+      },
+      "npm:debug@2.6.0": {
+        "main": "src/browser.js",
+        "jspmNodeConversion": false,
+        "format": "cjs",
+        "map": {
+          "./src/browser.js": {
+            "node": "./src/node.js"
+          },
+          "./node.js": {
+            "browser": "./src/browser.js"
+          },
+          "fs": "@node/fs",
+          "net": "@node/net",
+          "tty": "@node/tty",
+          "util": "@node/util"
+        }
+      },
+      "npm:inherits@2.0.3": {
+        "ignore": [
+          "test.js"
+        ]
+      },
+      "npm:lodash@4.17.4": {
+        "map": {
+          "buffer": "@empty",
+          "process": "@empty"
+        }
+      },
+      "npm:ms@0.7.2": {
+        "jspmNodeConversion": false,
+        "format": "cjs"
+      }
+    }
+  }
+}
